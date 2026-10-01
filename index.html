@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f0c29">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<title>⚡ Storm File - استور فایل</title>
+<style>
+  @font-face {
+    font-family: 'Vazirmatn';
+    font-weight: 400;
+    font-display: swap;
+    src: url(https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2) format('woff2');
+  }
+  @font-face {
+    font-family: 'Vazirmatn';
+    font-weight: 700;
+    font-display: swap;
+    src: url(https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2) format('woff2');
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --bg: #0f0c29;
+    --bg2: #1a1a2e;
+    --bg3: #16213e;
+    --primary: #667eea;
+    --secondary: #764ba2;
+    --accent: #f093fb;
+    --success: #00ff88;
+    --danger: #ff4757;
+    --warning: #ffd700;
+    --text: #ffffff;
+    --text-dim: #a0a0b0;
+    --border: rgba(255,255,255,0.1);
+    --card-bg: rgba(255,255,255,0.05);
+    --card-hover: rgba(255,255,255,0.1);
+  }
+
+  html, body { height: 100%; }
+
+  body {
+    font-family: 'Vazirmatn', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    color: var(--text);
+    padding-bottom: 80px;
+  }
+
+  /* ===== هدر ===== */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(15, 12, 41, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+  }
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  .logo {
+    font-size: 22px;
+    font-weight: bold;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .search-box {
+    flex: 1;
+    min-width: 200px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    border: 2px solid var(--border);
+    background: var(--card-bg);
+    color: var(--text);
+    font-family: 'Vazirmatn', Tahoma;
+    font-size: 14px;
+    transition: border 0.2s;
+  }
+  .search-box:focus { outline: none; border-color: var(--primary); }
+  .search-box::placeholder { color: var(--text-dim); }
+
+  .icon-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    border: 2px solid var(--border);
+    background: var(--card-bg);
+    color: var(--text);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .icon-btn:hover { background: var(--card-hover); }
+  .icon-btn:active { transform: scale(0.92); }
+
+  /* ===== محتوا ===== */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .hero {
+    text-align: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, rgba(102,126,234,0.15), rgba(240,147,251,0.1));
+    border-radius: 24px;
+    margin-bottom: 30px;
+    border: 1px solid var(--border);
+  }
+  .hero h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p { color: var(--text-dim); font-size: 15px; }
+
+  .section-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .categories {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+  }
+  .cat-chip {
+    padding: 8px 18px;
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    border-radius: 20px;
+    color: var(--text);
+    font-family: 'Vazirmatn', Tahoma;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .cat-chip:hover { background: var(--card-hover); }
+  .cat-chip.active {
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border-color: transparent;
+    font-weight: bold;
+  }
+
+  .files-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+  }
+
+  .file-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 18px;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .file-card:hover {
+    transform: translateY(-4px);
+    background: var(--card-hover);
+    border-color: var(--primary);
+    box-shadow: 0 10px 30px rgba(102,126,234,0.2);
+  }
+  .file-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--primary), var(--accent));
+  }
+  .file-icon {
+    font-size: 50px;
+    margin-bottom: 12px;
+    display: block;
+    text-align: center;
+  }
+  .file-name {
+    font-size: 17px;
+    font-weight: bold;
+    margin-bottom: 6px;
+    word-wrap: break-word;
+  }
+  .file-desc {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .file-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: var(--text-dim);
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .file-category {
+    background: rgba(102,126,234,0.2);
+    padding: 3px 10px;
+    border-radius: 8px;
+    color: var(--primary);
+    font-weight: bold;
+  }
+  .file-stats { display: flex; gap: 10px; }
+  .file-stats span { display: flex; align-items: center; gap: 3px; }
+
+  .empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-dim);
+  }
+  .empty-icon { font-size: 60px; margin-bottom: 15px; }
+
+  /* ===== صفحه‌ی فایل ===== */
+  .detail-page {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .back-btn {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 8px 16px;
+    color: var(--text);
+    font-family: 'Vazirmatn', Tahoma;
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: all 0.2s;
+  }
+  .back-btn:hover { background: var(--card-hover); }
+
+  .detail-header {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 30px;
+    margin-bottom: 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .detail-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+  }
+  .detail-icon {
+    font-size: 90px;
+    margin-bottom: 15px;
+    display: block;
+  }
+  .detail-name {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .detail-category {
+    display: inline-block;
+    background: rgba(102,126,234,0.2);
+    padding: 4px 14px;
+    border-radius: 10px;
+    color: var(--primary);
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  .detail-stats {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+  }
+  .detail-stat {
+    text-align: center;
+  }
+  .detail-stat-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--warning);
+  }
+  .detail-stat-label {
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .download-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px 40px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-family: 'Vazirmatn', Tahoma;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    box-shadow: 0 8px 25px rgba(102,126,234,0.4);
+  }
+  .download-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(102,126,234,0.6);
+  }
+  .download-btn:active { transform: scale(0.97); }
+
+  .detail-section {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 20px;
+  }
+  .detail-section h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .detail-section p {
+    color: var(--text-dim);
+    font-size: 14px;
+    line-height: 1.9;
+    white-space: pre-wrap;
+  }
+  .features-list {
+    list-style: none;
+    padding: 0;
+  }
+  .features-list li {
+    padding: 10px 15px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .features-list li::before {
+    content: '✅';
+    font-size: 16px;
+  }
+
+  .rating-box {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+  }
+  .star {
+    font-size: 32px;
+    cursor: pointer;
+    color: #444;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .star:hover, .star.active { color: var(--warning); transform: scale(1.15); }
+
+  /* ===== پنل ادمین ===== */
+  .admin-panel {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .admin-btn {
+    padding: 10px 20px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Vazirmatn', Tahoma;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+  }
+  .admin-btn:hover { transform: translateY(-2px); }
+  .admin-btn.danger { background: linear-gradient(90deg, #ff4757, #c0392b); }
+  .admin-btn.success { background: linear-gradient(90deg, #00b894, #00cec9); }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+  .form-label {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 6px;
+    color: var(--text-dim);
+  }
+  .form-input, .form-textarea, .form-select {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 12px;
+    border: 2px solid var(--border);
+    background: var(--card-bg);
+    color: var(--text);
+    font-family: 'Vazirmatn', Tahoma;
+    font-size: 14px;
+    transition: border 0.2s;
+  }
+  .form-input:focus, .form-textarea:focus, .form-select:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+  .form-textarea { resize: vertical; min-height: 80px; }
+  .form-select option { background: #1a1a2e; }
+
+  .admin-file-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .admin-file-item {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .admin-file-item .file-icon-small { font-size: 30px; }
+  .admin-file-item .file-info { flex: 1; min-width: 0; }
+  .admin-file-item .file-info-name {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .admin-file-item .file-info-meta {
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+  .admin-actions { display: flex; gap: 5px; }
+  .admin-action-btn {
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    color: var(--text);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .admin-action-btn:hover { background: var(--card-hover); }
+  .admin-action-btn.delete { background: rgba(255,71,87,0.2); border-color: rgba(255,71,87,0.5); }
+
+  /* ===== مودال ===== */
+  .modal {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    padding: 20px;
+  }
+  .modal.visible { display: flex; }
+  .modal-content {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    border-radius: 24px;
+    padding: 30px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    box-shadow: 0 25px 70px rgba(0,0,0,0.6);
+    animation: slideUp 0.3s;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .modal h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .modal-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+  }
+  .modal-buttons button { flex: 1; }
+
+  /* ===== نوتیفیکیشن ===== */
+  .notification {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: linear-gradient(90deg, #00b894, #00cec9);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 14px;
+    font-weight: bold;
+    z-index: 200;
+    transition: transform 0.3s;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    font-size: 14px;
+  }
+  .notification.visible { transform: translateX(-50%) translateY(0); }
+  .notification.error { background: linear-gradient(90deg, #ff4757, #c0392b); }
+
+  /* ===== منوی پایین ===== */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0; right: 0;
+    background: rgba(15, 12, 41, 0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-around;
+    z-index: 50;
+  }
+  .nav-btn {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-family: 'Vazirmatn', Tahoma;
+    font-size: 11px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 5px 15px;
+    transition: all 0.2s;
+  }
+  .nav-btn.active, .nav-btn:hover { color: var(--primary); }
+  .nav-btn-icon { font-size: 20px; }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 26px; }
+    .hero { padding: 25px 15px; }
+    .files-grid { grid-template-columns: 1fr; }
+    .detail-icon { font-size: 70px; }
+    .detail-name { font-size: 22px; }
+    .container { padding: 15px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="logo" onclick="goHome()">⚡ Storm File</div>
+    <input type="text" class="search-box" id="searchInput" placeholder="🔍 جستجو در فایل‌ها..." oninput="handleSearch()">
+    <button class="icon-btn" onclick="toggleDarkMode()" id="darkToggle" title="تغییر تم">🌙</button>
+    <button class="icon-btn" onclick="openAdminLogin()" title="پنل ادمین">⚙️</button>
+  </div>
+</header>
+
+<main class="container" id="app"></main>
+
+<nav class="bottom-nav">
+  <button class="nav-btn active" onclick="goHome()">
+    <span class="nav-btn-icon">🏠</span>
+    <span>خانه</span>
+  </button>
+  <button class="nav-btn" onclick="showFavorites()">
+    <span class="nav-btn-icon">❤️</span>
+    <span>علاقه‌مندی</span>
+  </button>
+  <button class="nav-btn" onclick="showAllFiles()">
+    <span class="nav-btn-icon">📁</span>
+    <span>همه فایل‌ها</span>
+  </button>
+</nav>
+
+<div class="notification" id="notification"></div>
+
+<script>
+  // ===== داده‌های پیش‌فرض =====
+  const DEFAULT_FILES = [
+    {
+      id: 1,
+      name: 'فلش‌کارت هوشمند',
+      icon: '🧠',
+      category: 'آموزشی',
+      description: 'بهترین اپ برای حفظ کردن با تکرار فاصله‌دار، پکیج‌های آماده، حالت امتحان، آمار پیشرفته و دستاوردها',
+      longDescription: 'فلش‌کارت هوشمند یک اپلیکیشن کامل برای یادگیری و حفظ کردن است. با این اپ می‌توانید کارت‌های آموزشی بسازید، از پکیج‌های آماده استفاده کنید، امتحان بدهید و پیشرفت خود را مشاهده کنید.\n\nامکانات:\n• ساخت فلش‌کارت نامحدود\n• پکیج‌های آماده (پایتخت‌ها، لغات، ریاضی، تاریخ)\n• حالت امتحان با تایمر\n• حالت تمرکز\n• آمار و نمودار پیشرفت\n• دستاوردها\n• پشتیبان‌گیری JSON و CSV\n• ۶ تم رنگی\n• دو زبانه (فارسی/انگلیسی)',
+      features: ['ساخت فلش‌کارت نامحدود', 'پکیج‌های آماده', 'حالت امتحان با تایمر', 'حالت تمرکز', 'آمار پیشرفته', 'دستاوردها', 'پشتیبان‌گیری JSON/CSV', '۶ تم رنگی', 'فارسی و انگلیسی'],
+      downloadUrl: 'https://github.com/majid0526/storm-file/releases/download/v1.0/flashcards.apk',
+      size: '2.5 MB',
+      version: '1.0',
+      downloads: 0,
+      rating: 5,
+      ratings: [],
+      date: '2026-10-01'
+    },
+    {
+      id: 2,
+      name: 'بازی تونگ‌تونگ',
+      icon: '🪵',
+      category: 'بازی',
+      description: 'از تونگ‌تونگ سحور فرار کن! بازی پیکسلی دوبعدی با هوش مصنوعی دشمن',
+      longDescription: 'بازی تونگ‌تونگ یک بازی پیکسلی دوبعدی است که در آن باید از دست تونگ‌تونگ سحور فرار کنید.\n\nامکانات:\n• گرافیک پیکسلی\n• هوش مصنوعی دشمن\n• پلتفرم‌ها و موانع\n• فحش‌های خنده‌دار\n• امتیاز و رکورد',
+      features: ['گرافیک پیکسلی', 'هوش مصنوعی دشمن', 'پلتفرم‌ها', 'فحش‌های بامزه', 'امتیاز و رکورد'],
+      downloadUrl: 'https://github.com/majid0526/storm-file/releases/download/v1.0/tongtong.apk',
+      size: '1.8 MB',
+      version: '1.0',
+      downloads: 0,
+      rating: 5,
+      ratings: [],
+      date: '2026-10-01'
+    }
+  ];
+
+  // ===== متغیرها =====
+  let files = JSON.parse(localStorage.getItem('sf_files') || 'null') || DEFAULT_FILES;
+  let favorites = JSON.parse(localStorage.getItem('sf_favorites') || '[]');
+  let darkMode = localStorage.getItem('sf_dark') !== 'false';
+  let currentView = 'home';
+  let currentCategory = 'all';
+  let currentSearch = '';
+  let currentFileId = null;
+  let isAdmin = false;
+  const ADMIN_PASSWORD = 'admin123'; // رمز عبور ادمین - عوضش کن!
+
+  // ===== ذخیره =====
+  function saveFiles() {
+    localStorage.setItem('sf_files', JSON.stringify(files));
+  }
+  function saveFavorites() {
+    localStorage.setItem('sf_favorites', JSON.stringify(favorites));
+  }
+
+  // ===== نوتیفیکیشن =====
+  function notify(text, type) {
+    const n = document.getElementById('notification');
+    n.textContent = text;
+    n.className = 'notification visible' + (type === 'error' ? ' error' : '');
+    clearTimeout(n._timer);
+    n._timer = setTimeout(() => n.classList.remove('visible'), 2000);
+  }
+
+  // ===== تم تاریک =====
+  function toggleDarkMode() {
+    darkMode = !darkMode;
+    localStorage.setItem('sf_dark', darkMode);
+    document.getElementById('darkToggle').textContent = darkMode ? '🌙' : '☀️';
+    if (!darkMode) {
+      document.body.style.background = 'linear-gradient(135deg, #f0f0ff 0%, #e0e0ff 50%, #f5f0ff 100%)';
+      document.documentElement.style.setProperty('--bg', '#f0f0ff');
+      document.documentElement.style.setProperty('--text', '#1a1a2e');
+      document.documentElement.style.setProperty('--text-dim', '#666');
+      document.documentElement.style.setProperty('--card-bg', 'rgba(255,255,255,0.7)');
+      document.documentElement.style.setProperty('--card-hover', 'rgba(255,255,255,0.9)');
+      document.documentElement.style.setProperty('--border', 'rgba(0,0,0,0.1)');
+    } else {
+      document.body.style.background = 'linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)';
+      document.documentElement.style.setProperty('--text', '#ffffff');
+      document.documentElement.style.setProperty('--text-dim', '#a0a0b0');
+      document.documentElement.style.setProperty('--card-bg', 'rgba(255,255,255,0.05)');
+      document.documentElement.style.setProperty('--card-hover', 'rgba(255,255,255,0.1)');
+      document.documentElement.style.setProperty('--border', 'rgba(255,255,255,0.1)');
+    }
+  }
+
+  // ===== جستجو =====
+  function handleSearch() {
+    currentSearch = document.getElementById('searchInput').value.toLowerCase();
+    if (currentView === 'home' || currentView === 'all') renderHome();
+  }
+
+  // ===== ناوبری =====
+  function goHome() {
+    currentView = 'home';
+    currentCategory = 'all';
+    currentFileId = null;
+    updateNav();
+    renderHome();
+  }
+
+  function showAllFiles() {
+    currentView = 'all';
+    updateNav();
+    renderHome();
+  }
+
+  function showFavorites() {
+    currentView = 'favorites';
+    updateNav();
+    renderFavorites();
+  }
+
+  function updateNav() {
+    document.querySelectorAll('.nav-btn').forEach((btn, i) => {
+      btn.classList.remove('active');
+      if (currentView === 'home' && i === 0) btn.classList.add('active');
+      if (currentView === 'favorites' && i === 1) btn.classList.add('active');
+      if (currentView === 'all' && i === 2) btn.classList.add('active');
+    });
+  }
+
+  // ===== فیلتر =====
+  function getFilteredFiles() {
+    let filtered = files;
+    if (currentCategory !== 'all') {
+      filtered = filtered.filter(f => f.category === currentCategory);
+    }
+    if (currentSearch) {
+      filtered = filtered.filter(f =>
+        f.name.toLowerCase().includes(currentSearch) ||
+        f.description.toLowerCase().includes(currentSearch) ||
+        f.category.toLowerCase().includes(currentSearch)
+      );
+    }
+    return filtered;
+  }
+
+  function getCategories() {
+    const cats = new Set(files.map(f => f.category));
+    return ['all', ...Array.from(cats)];
+  }
+
+  // ===== صفحه‌ی اصلی =====
+  function renderHome() {
+    const app = document.getElementById('app');
+    const filtered = getFilteredFiles();
+    const categories = getCategories();
+
+    let html = '';
+    if (currentView === 'home') {
+      html += `
+        <div class="hero">
+          <h1>⚡ Storm File</h1>
+          <p>فایل‌ها و اپلیکیشن‌های من رو رایگان دانلود کن</p>
+        </div>
+      `;
+    }
+
+    html += `
+      <div class="section-title">📂 دسته‌بندی‌ها</div>
+      <div class="categories">
+        ${categories.map(cat => `
+          <div class="cat-chip ${cat === currentCategory ? 'active' : ''}" onclick="setCategory('${cat}')">
+            ${cat === 'all' ? '🏷️ همه' : escapeHtml(cat)}
+          </div>
+        `).join('')}
+      </div>
+    `;
+
+    html += `
+      <div class="section-title">📁 ${currentView === 'all' ? 'همه فایل‌ها' : 'فایل‌های موجود'} (${filtered.length})</div>
+    `;
+
+    if (filtered.length === 0) {
+      html += `
+        <div class="empty">
+          <div class="empty-icon">📭</div>
+          <h3>فایلی پیدا نشد</h3>
+          <p style="margin-top:10px;">جستجو یا دسته‌بندی رو تغییر بده</p>
+        </div>
+      `;
+    } else {
+      html += `<div class="files-grid">`;
+      filtered.forEach(file => {
+        const isFav = favorites.includes(file.id);
+        html += `
+          <div class="file-card" onclick="openFile(${file.id})">
+            <span class="file-icon">${file.icon}</span>
+            <div class="file-name">${escapeHtml(file.name)}</div>
+            <div class="file-desc">${escapeHtml(file.description)}</div>
+            <div class="file-meta">
+              <span class="file-category">${escapeHtml(file.category)}</span>
+              <div class="file-stats">
+                <span>⬇️ ${file.downloads || 0}</span>
+                <span>⭐ ${getAverageRating(file)}</span>
+                <span>${isFav ? '❤️' : ''}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      html += `</div>`;
+    }
+
+    app.innerHTML = html;
+  }
+
+  function renderFavorites() {
+    const app = document.getElementById('app');
+    const favFiles = files.filter(f => favorites.includes(f.id));
+
+    let html = `
+      <div class="section-title">❤️ علاقه‌مندی‌ها (${favFiles.length})</div>
+    `;
+
+    if (favFiles.length === 0) {
+      html += `
+        <div class="empty">
+          <div class="empty-icon">💔</div>
+          <h3>هنوز چیزی به علاقه‌مندی‌ها اضافه نکردی</h3>
+          <p style="margin-top:10px;">روی هر فایل بزن و قلب رو بزن</p>
+        </div>
+      `;
+    } else {
+      html += `<div class="files-grid">`;
+      favFiles.forEach(file => {
+        html += `
+          <div class="file-card" onclick="openFile(${file.id})">
+            <span class="file-icon">${file.icon}</span>
+            <div class="file-name">${escapeHtml(file.name)}</div>
+            <div class="file-desc">${escapeHtml(file.description)}</div>
+            <div class="file-meta">
+              <span class="file-category">${escapeHtml(file.category)}</span>
+              <div class="file-stats">
+                <span>⬇️ ${file.downloads || 0}</span>
+                <span>⭐ ${getAverageRating(file)}</span>
+                <span>❤️</span>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      html += `</div>`;
+    }
+
+    app.innerHTML = html;
+  }
+
+  function setCategory(cat) {
+    currentCategory = cat;
+    renderHome();
+  }
+
+  // ===== صفحه‌ی فایل =====
+  function openFile(id) {
+    currentView = 'file';
+    currentFileId = id;
+    const file = files.find(f => f.id === id);
+    if (!file) { goHome(); return; }
+    renderFile(file);
+  }
+
+  function renderFile(file) {
+    const app = document.getElementById('app');
+    const isFav = favorites.includes(file.id);
+    const userRating = file.ratings ? file.ratings.find(r => r.user === 'me') : null;
+
+    app.innerHTML = `
+      <div class="detail-page">
+        <button class="back-btn" onclick="goHome()">🔙 برگشت</button>
+        <div class="detail-header">
+          <span class="detail-icon">${file.icon}</span>
+          <h1 class="detail-name">${escapeHtml(file.name)}</h1>
+          <div class="detail-category">${escapeHtml(file.category)}</div>
+          <div class="detail-stats">
+            <div class="detail-stat">
+              <div class="detail-stat-value">${file.downloads || 0}</div>
+              <div class="detail-stat-label">دانلود</div>
+            </div>
+            <div class="detail-stat">
+              <div class="detail-stat-value">${getAverageRating(file)}</div>
+              <div class="detail-stat-label">امتیاز</div>
+            </div>
+            <div class="detail-stat">
+              <div class="detail-stat-value">${file.size || '?'}</div>
+              <div class="detail-stat-label">حجم</div>
+            </div>
+            <div class="detail-stat">
+              <div class="detail-stat-value">${file.version || '1.0'}</div>
+              <div class="detail-stat-label">نسخه</div>
+            </div>
+          </div>
+          <a href="${file.downloadUrl}" class="download-btn" onclick="incrementDownload(${file.id})" target="_blank">
+            ⬇️ دانلود رایگان
+          </a>
+          <div style="margin-top:20px;">
+            <button class="back-btn" onclick="toggleFavorite(${file.id})">
+              ${isFav ? '❤️ حذف از علاقه‌مندی' : '🤍 افزودن به علاقه‌مندی'}
+            </button>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h3>📝 توضیحات</h3>
+          <p>${escapeHtml(file.longDescription || file.description)}</p>
+        </div>
+
+        ${file.features && file.features.length > 0 ? `
+          <div class="detail-section">
+            <h3>✨ امکانات</h3>
+            <ul class="features-list">
+              ${file.features.map(f => `<li>${escapeHtml(f)}</li>`).join('')}
+            </ul>
+          </div>
+        ` : ''}
+
+        <div class="detail-section">
+          <h3>⭐ امتیاز بده</h3>
+          <div class="rating-box">
+            ${[1,2,3,4,5].map(n => `
+              <span class="star ${userRating && userRating.rating >= n ? 'active' : ''}" onclick="rateFile(${file.id}, ${n})">★</span>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function getAverageRating(file) {
+    if (!file.ratings || file.ratings.length === 0) return '5.0';
+    const sum = file.ratings.reduce((s, r) => s + r.rating, 0);
+    return (sum / file.ratings.length).toFixed(1);
+  }
+
+  function incrementDownload(id) {
+    const file = files.find(f => f.id === id);
+    if (file) {
+      file.downloads = (file.downloads || 0) + 1;
+      saveFiles();
+    }
+  }
+
+  function toggleFavorite(id) {
+    if (favorites.includes(id)) {
+      favorites = favorites.filter(f => f !== id);
+      notify('از علاقه‌مندی‌ها حذف شد');
+    } else {
+      favorites.push(id);
+      notify('به علاقه‌مندی‌ها اضافه شد ❤️');
+    }
+    saveFavorites();
+    openFile(id);
+  }
+
+  function rateFile(id, rating) {
+    const file = files.find(f => f.id === id);
+    if (!file) return;
+    if (!file.ratings) file.ratings = [];
+    file.ratings = file.ratings.filter(r => r.user !== 'me');
+    file.ratings.push({ user: 'me', rating: rating });
+    saveFiles();
+    notify('امتیازت ثبت شد! ⭐');
+    openFile(id);
+  }
+
+  // ===== پنل ادمین =====
+  function openAdminLogin() {
+    if (isAdmin) {
+      showAdminPanel();
+      return;
+    }
+    const modal = document.createElement('div');
+    modal.className = 'modal visible';
+    modal.id = 'adminModal';
+    modal.innerHTML = `
+      <div class="modal-content">
+        <h2>🔐 ورود به پنل ادمین</h2>
+        <div class="form-group">
+          <input type="password" class="form-input" id="adminPass" placeholder="رمز عبور..." style="text-align:center;">
+        </div>
+        <div class="modal-buttons">
+          <button class="admin-btn danger" onclick="closeModal('adminModal')">انصراف</button>
+          <button class="admin-btn success" onclick="checkAdminPass()">ورود</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    setTimeout(() => {
+      const input = document.getElementById('adminPass');
+      if (input) {
+        input.focus();
+        input.addEventListener('keydown', e => { if (e.key === 'Enter') checkAdminPass(); });
+      }
+    }, 100);
+  }
+
+  function checkAdminPass() {
+    const pass = document.getElementById('adminPass').value;
+    if (pass === ADMIN_PASSWORD) {
+      isAdmin = true;
+      closeModal('adminModal');
+      notify('خوش اومدی ادمین! 👋');
+      showAdminPanel();
+    } else {
+      notify('رمز اشتباهه!', 'error');
+    }
+  }
+
+  function showAdminPanel() {
+    currentView = 'admin';
+    const app = document.getElementById('app');
+    app.innerHTML = `
+      <div class="admin-panel">
+        <div class="admin-header">
+          <h2 style="font-size:22px;">⚙️ پنل ادمین</h2>
+          <div style="display:flex;gap:8px;">
+            <button class="admin-btn" onclick="openAddFile()">➕ افزودن فایل</button>
+            <button class="admin-btn danger" onclick="logoutAdmin()">🚪 خروج</button>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h3>📊 آمار</h3>
+          <div class="detail-stats">
+            <div class="detail-stat">
+              <div class="detail-stat-value">${files.length}</div>
+              <div class="detail-stat-label">کل فایل‌ها</div>
+            </div>
+            <div class="detail-stat">
+              <div class="detail-stat-value">${files.reduce((s, f) => s + (f.downloads || 0), 0)}</div>
+              <div class="detail-stat-label">کل دانلودها</div>
+            </div>
+            <div class="detail-stat">
+              <div class="detail-stat-value">${favorites.length}</div>
+              <div class="detail-stat-label">علاقه‌مندی‌ها</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-title">📁 مدیریت فایل‌ها</div>
+        <div class="admin-file-list">
+          ${files.map(file => `
+            <div class="admin-file-item">
+              <span class="file-icon-small">${file.icon}</span>
+              <div class="file-info">
+                <div class="file-info-name">${escapeHtml(file.name)}</div>
+                <div class="file-info-meta">${escapeHtml(file.category)} · ${file.downloads || 0} دانلود</div>
+              </div>
+              <div class="admin-actions">
+                <button class="admin-action-btn" onclick="openEditFile(${file.id})">✏️</button>
+                <button class="admin-action-btn delete" onclick="deleteFile(${file.id})">🗑️</button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  function openAddFile() {
+    openFileForm(null);
+  }
+
+  function openEditFile(id) {
+    openFileForm(id);
+  }
+
+  function openFileForm(id) {
+    const file = id ? files.find(f => f.id === id) : null;
+    const modal = document.createElement('div');
+    modal.className = 'modal visible';
+    modal.id = 'fileFormModal';
+    modal.innerHTML = `
+      <div class="modal-content">
+        <h2>${file ? '✏️ ویرایش فایل' : '➕ افزودن فایل جدید'}</h2>
+        <div class="form-group">
+          <label class="form-label">نام فایل *</label>
+          <input type="text" class="form-input" id="fName" value="${file ? escapeHtml(file.name) : ''}" placeholder="مثلاً: فلش‌کارت هوشمند">
+        </div>
+        <div class="form-group">
+          <label class="form-label">آیکون (ایموجی) *</label>
+          <input type="text" class="form-input" id="fIcon" value="${file ? file.icon : '📦'}" placeholder="📦" maxlength="4">
+        </div>
+        <div class="form-group">
+          <label class="form-label">دسته‌بندی *</label>
+          <input type="text" class="form-input" id="fCategory" value="${file ? escapeHtml(file.category) : ''}" placeholder="اپلیکیشن، بازی، ابزار،..." list="catList">
+          <datalist id="catList">
+            ${getCategories().filter(c => c !== 'all').map(c => `<option value="${escapeHtml(c)}">`).join('')}
+          </datalist>
+        </div>
+        <div class="form-group">
+          <label class="form-label">توضیح کوتاه *</label>
+          <input type="text" class="form-input" id="fDescription" value="${file ? escapeHtml(file.description) : ''}" placeholder="یه توضیح کوتاه...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">توضیحات کامل</label>
+          <textarea class="form-textarea" id="fLongDesc" placeholder="توضیحات کامل...">${file ? escapeHtml(file.longDescription || '') : ''}</textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">امکانات (با کاما جدا کن)</label>
+          <input type="text" class="form-input" id="fFeatures" value="${file && file.features ? file.features.join(', ') : ''}" placeholder="مثلاً: سریع، رایگان، آفلاین">
+        </div>
+        <div class="form-group">
+          <label class="form-label">لینک دانلود *</label>
+          <input type="text" class="form-input" id="fUrl" value="${file ? escapeHtml(file.downloadUrl) : ''}" placeholder="https://github.com/.../file.apk" dir="ltr">
+        </div>
+        <div class="form-group">
+          <label class="form-label">حجم فایل</label>
+          <input type="text" class="form-input" id="fSize" value="${file ? file.size || '' : ''}" placeholder="مثلاً: 2.5 MB">
+        </div>
+        <div class="form-group">
+          <label class="form-label">نسخه</label>
+          <input type="text" class="form-input" id="fVersion" value="${file ? file.version || '1.0' : '1.0'}" placeholder="1.0">
+        </div>
+        <div class="modal-buttons">
+          <button class="admin-btn danger" onclick="closeModal('fileFormModal')">انصراف</button>
+          <button class="admin-btn success" onclick="saveFileForm(${id || 'null'})">💾 ذخیره</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
+
+  function saveFileForm(id) {
+    const name = document.getElementById('fName').value.trim();
+    const icon = document.getElementById('fIcon').value.trim() || '📦';
+    const category = document.getElementById('fCategory').value.trim();
+    const description = document.getElementById('fDescription').value.trim();
+    const longDescription = document.getElementById('fLongDesc').value.trim();
+    const features = document.getElementById('fFeatures').value.split(',').map(f => f.trim()).filter(f => f);
+    const downloadUrl = document.getElementById('fUrl').value.trim();
+    const size = document.getElementById('fSize').value.trim();
+    const version = document.getElementById('fVersion').value.trim() || '1.0';
+
+    if (!name || !category || !description || !downloadUrl) {
+      notify('لطفاً فیلدهای ستاره‌دار رو پر کن!', 'error');
+      return;
+    }
+
+    if (id) {
+      const file = files.find(f => f.id === id);
+      if (file) {
+        file.name = name; file.icon = icon; file.category = category;
+        file.description = description; file.longDescription = longDescription;
+        file.features = features; file.downloadUrl = downloadUrl;
+        file.size = size; file.version = version;
+      }
+      notify('فایل ویرایش شد! ✏️');
+    } else {
+      files.push({
+        id: Date.now(), name, icon, category, description, longDescription,
+        features, downloadUrl, size, version,
+        downloads: 0, rating: 5, ratings: [],
+        date: new Date().toISOString().split('T')[0]
+      });
+      notify('فایل اضافه شد! ✨');
+    }
+    saveFiles();
+    closeModal('fileFormModal');
+    showAdminPanel();
+  }
+
+  function deleteFile(id) {
+    if (!confirm('مطمئنی می‌خوای این فایل رو حذف کنی؟')) return;
+    files = files.filter(f => f.id !== id);
+    favorites = favorites.filter(f => f !== id);
+    saveFiles();
+    saveFavorites();
+    notify('فایل حذف شد 🗑️');
+    showAdminPanel();
+  }
+
+  function logoutAdmin() {
+    isAdmin = false;
+    notify('از پنل ادمین خارج شدی');
+    goHome();
+  }
+
+  function closeModal(id) {
+    const modal = document.getElementById(id);
+    if (modal) modal.remove();
+  }
+
+  function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  // ===== شروع =====
+  document.getElementById('darkToggle').textContent = darkMode ? '🌙' : '☀️';
+  if (!darkMode) toggleDarkMode();
+  renderHome();
+
+  // ===== Service Worker =====
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  }
+</script>
+
+</body>
+</html>
